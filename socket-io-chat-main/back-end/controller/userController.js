@@ -81,7 +81,7 @@ const findUser = async (req, res) => {
   }
 };
 
-// GET ONE USER
+// GET ALL USER
 const getUsers = async (req, res) => {
   try {
     const users = await userModel.find();

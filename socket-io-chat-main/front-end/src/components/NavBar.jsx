@@ -32,8 +32,7 @@ const NavBar = () => {
 };
 const DummyContent = () => {
   return (
-    // IT WAS my-30
-    <div className="bg-amber-400 mx-auto mt-30 mb grid grid-cols-1 h-120 w-4xl dark:bg-black relative dark:border-white/20 rounded-2xl">
+    <div className="mx-auto mt-30 grid grid-cols-1 h-120 w-4xl dark:bg-black relative dark:border-white/20 border border-neutral-200 bg-white rounded-2xl">
       <Outlet />
     </div>
   );

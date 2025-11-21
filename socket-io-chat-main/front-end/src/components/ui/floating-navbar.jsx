@@ -12,7 +12,6 @@ import { IconLogin } from "@tabler/icons-react";
 import { LOGIN_ROUTE } from "../../routes/Routes";
 
 export const FloatingNav = ({ navItems, className }) => {
-  
   // const { scrollYProgress } = useScroll();
   // const [visible, setVisible] = useState(true);
   // useMotionValueEvent(scrollYProgress, "change", (current) => {
@@ -52,7 +51,7 @@ export const FloatingNav = ({ navItems, className }) => {
             key={`link=${idx}`}
             to={navItem.link}
             className={cn(
-              "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
+              "items-center flex space-x-1 rounded-4xl lg:pr-2 lg:py-2 dark:text-neutral-50 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-600 lg:hover:bg-neutral-200 lg:active:hover:bg-neutral-300 transition-colors duration-150"
             )}
           >
             <span className="block sm:mx-2">{navItem.icon}</span>
@@ -60,7 +59,7 @@ export const FloatingNav = ({ navItems, className }) => {
           </Link>
         ))}
         <Link to={LOGIN_ROUTE}>
-          <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/20 text-black dark:text-white px-4 py-2 rounded-full cursor-pointer flex items-center justify-center space-x-1">
+          <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/20 text-black dark:text-white hover:bg-neutral-200 active:hover:bg-neutral-300 px-4 py-2 rounded-full cursor-pointer flex items-center justify-center space-x-1 transition-colors duration-150">
             <IconLogin className="h-4 w-4 text-black dark:text-white" />
             <span>Login</span>
             <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-linear-to-r from-transparent via-blue-600 to-transparent h-px" />

@@ -1,10 +1,14 @@
 import NavBar from "../components/NavBar";
+import { BackgroundRippleEffect } from "../components/ui/background-ripple-effect";
 
 const GlobalLayout = () => {
   return (
-    <div>
-      <NavBar />
-      <div className="container mx-auto p-4" />
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <BackgroundRippleEffect className="fixed inset-0 -z-10" />
+
+      <div className="relative z-10">
+        <NavBar />
+      </div>
     </div>
   );
 };

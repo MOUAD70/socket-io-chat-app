@@ -6,37 +6,49 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/aceternity/utils";
 import { Link } from "react-router-dom";
 import { IconLogin } from "@tabler/icons-react";
-import { LOGIN_ROUTE } from "../../routes/Routes";
+import { LOGIN_ROUTE } from "../../../routes/Routes";
 
 export const FloatingNav = ({ navItems, className }) => {
-  // const { scrollYProgress } = useScroll();
-  // const [visible, setVisible] = useState(true);
-  // useMotionValueEvent(scrollYProgress, "change", (current) => {
-  //   if (typeof current === "number") {
-  //     const currentScroll = scrollYProgress.get();
-  //     if (currentScroll < 0.01) {
-  //       setVisible(true);
-  //     } else {
-  //       setVisible(false);
-  //     }
-  //   }
-  // });
+  // 1. Use scrollY (pixels) instead of scrollYProgress
+  const { scrollY } = useScroll();
+  const [visible, setVisible] = useState(true);
 
-  const visible = true;
+  // 2. Monitor scroll events
+  useMotionValueEvent(scrollY, "change", (current) => {
+    if (typeof current === "number") {
+      const previous = scrollY.getPrevious() ?? 0; // Get previous scroll value
+      const direction = current - previous;
+
+      // Logic:
+      // 1. If at the very top (less than 50px), always show.
+      // 2. If scrolling UP (direction < 0), show.
+      // 3. If scrolling DOWN (direction > 0), hide.
+      
+      if (scrollY.get() < 50) {
+        setVisible(true);
+      } else {
+        if (direction < 0) {
+          setVisible(true); // Scrolling UP
+        } else {
+          setVisible(false); // Scrolling DOWN
+        }
+      }
+    }
+  });
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         initial={{
           opacity: 1,
-          y: 0,
+          y: -100, 
         }}
         animate={{
-          y: 0,
-          opacity: 1,
+          y: visible ? 0 : -100,
+          opacity: visible ? 1 : 0,
         }}
         transition={{
           duration: 0.2,
@@ -62,7 +74,7 @@ export const FloatingNav = ({ navItems, className }) => {
           <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/20 text-black dark:text-white hover:bg-neutral-200 active:hover:bg-neutral-300 px-4 py-2 rounded-full cursor-pointer flex items-center justify-center space-x-1 transition-colors duration-150">
             <IconLogin className="h-4 w-4 text-black dark:text-white" />
             <span>Login</span>
-            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-linear-to-r from-transparent via-blue-600 to-transparent h-px" />
+            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-linear-to-r from-transparent via-amber-600 to-transparent h-px" />
           </button>
         </Link>
       </motion.div>

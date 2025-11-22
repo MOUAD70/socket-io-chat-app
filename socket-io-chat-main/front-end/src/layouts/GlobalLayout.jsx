@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar";
-import { BackgroundRippleEffect } from "../components/ui/background-ripple-effect";
+import { BackgroundRippleEffect } from "../components/ui/aceternity/background-ripple-effect";
 
 const GlobalLayout = () => {
   return (

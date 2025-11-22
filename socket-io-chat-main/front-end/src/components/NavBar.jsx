@@ -1,6 +1,6 @@
 "use client";
 import { Outlet } from "react-router-dom";
-import { FloatingNav } from "./ui/floating-navbar";
+import { FloatingNav } from "./ui/aceternity/floating-navbar";
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 
 const NavBar = () => {
@@ -32,7 +32,7 @@ const NavBar = () => {
 };
 const DummyContent = () => {
   return (
-    <div className="mx-auto mt-30 grid grid-cols-1 h-120 w-4xl dark:bg-black relative dark:border-white/20 border border-neutral-200 bg-white rounded-2xl">
+    <div className="mx-auto mt-30 w-full max-w-4xl relative rounded-2xl border border-neutral-200 dark:border-white/20 bg-white dark:bg-black overflow-hidden mb-5">
       <Outlet />
     </div>
   );

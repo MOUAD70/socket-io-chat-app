@@ -1,5 +1,5 @@
 import { cn } from "../lib/chadcn/utils";
-import { LOGIN_ROUTE, REGISTER_ROUTE } from "../routes/Routes.jsx";
+import { LOGIN_ROUTE } from "../routes/Routes.jsx";
 import { Button } from "./ui/button.jsx";
 import {
   Card,
@@ -75,10 +75,9 @@ export function RegisterForm({ className, ...props }) {
                 />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Sign up</Button>
                 <FieldDescription className="text-center">
-                  Already have an account?{" "}
-                  <Link to={LOGIN_ROUTE}>Log in</Link>
+                  Already have an account? <Link to={LOGIN_ROUTE}>Login</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

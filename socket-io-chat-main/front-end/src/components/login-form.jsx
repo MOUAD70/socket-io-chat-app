@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import { cn } from "../lib/chadcn/utils";
 import { REGISTER_ROUTE } from "../routes/Routes.jsx";
 import { Button } from "./ui/button.jsx";
@@ -16,8 +17,26 @@ import {
 } from "./ui/field.jsx";
 import { Input } from "./ui/input.jsx";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 export function LoginForm({ className, ...props }) {
+  const { handleLogin } = useContext(AuthContext);
+
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const user = await handleLogin({
+        email: form.email,
+        password: form.password,
+      });
+      console.log("Logged in as:", user);
+    } catch (err) {
+      console.log(err.response?.data || err.message);
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -26,7 +45,7 @@ export function LoginForm({ className, ...props }) {
           <CardDescription>Login with your Email and Password</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -34,6 +53,7 @@ export function LoginForm({ className, ...props }) {
                   id="email"
                   type="email"
                   placeholder="Enter your email..."
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className={
                     "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
                   }
@@ -53,6 +73,9 @@ export function LoginForm({ className, ...props }) {
                 <Input
                   id="password"
                   type="password"
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
                   className={
                     "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
                   }

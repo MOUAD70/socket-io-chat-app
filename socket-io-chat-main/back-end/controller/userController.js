@@ -6,22 +6,24 @@ const jwt = require("jsonwebtoken");
 // JWT TOKEN
 const generateToken = (_id) => {
   const jwtkey = process.env.JWT_SECRET_KEY;
-
   return jwt.sign({ id: _id }, jwtkey, { expiresIn: "3d" });
 };
 
 // REGISTER
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    let user = await userModel.findOne({ email });
+    let { name, email, password } = req.body;
 
+    if (!name || !email || !password) name = name.trim();
+    email = email.trim();
+
+    let user = await userModel.findOne({ email });
     if (user)
       return res.status(400).json("User with the given email already exist...");
-    if (!name || !email || !password)
-      return res.status(400).json("All fields are required...");
+
     if (!validator.isEmail(email))
       return res.status(400).json("Email format invalid...");
+
     if (!validator.isStrongPassword(password))
       return res
         .status(400)
@@ -30,11 +32,11 @@ const registerUser = async (req, res) => {
         );
 
     user = new userModel({ name, email, password });
+
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
     await user.save();
-
     const token = generateToken(user._id);
     res.status(200).json({ _id: user._id, name, email, token });
   } catch (err) {
@@ -45,8 +47,15 @@ const registerUser = async (req, res) => {
 
 // LOGIN
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
   try {
+    if (!email || !password) {
+      return res.status(400).json("All fields are required...");
+    }
+
+    email = email.trim();
+
     let user = await userModel.findOne({ email });
 
     if (!user) {
@@ -73,7 +82,6 @@ const findUser = async (req, res) => {
 
   try {
     const user = await userModel.findById(userId);
-
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
@@ -85,7 +93,6 @@ const findUser = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const users = await userModel.find();
-
     res.status(200).json(users);
   } catch (err) {
     console.log(err);

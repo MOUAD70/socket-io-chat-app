@@ -12,7 +12,6 @@ export const AuthContextProvider = ({ children }) => {
       setUser(data);
       return data;
     } catch (err) {
-      console.log("Login Error:", err.response?.data || err.message);
       throw err;
     }
   };
@@ -23,7 +22,6 @@ export const AuthContextProvider = ({ children }) => {
       setUser(data);
       return data;
     } catch (err) {
-      console.log("Sign up Error: ", err.response?.data || err.message);
       throw err;
     }
   };

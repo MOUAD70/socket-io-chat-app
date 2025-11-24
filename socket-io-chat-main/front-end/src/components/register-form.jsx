@@ -1,4 +1,7 @@
 import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { cn } from "../lib/chadcn/utils";
 import { LOGIN_ROUTE } from "../routes/Routes.jsx";
 import { Button } from "./ui/button.jsx";
@@ -19,28 +22,48 @@ import { Input } from "./ui/input.jsx";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
+const registerSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(30, "Name must be less than 30 characters"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Must contain at least one lowercase letter")
+    .regex(/[0-9]/, "Must contain at least one number")
+    .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"),
+});
+
 export function RegisterForm({ className, ...props }) {
   const { handleRegister } = useContext(AuthContext);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const [errorMsg, setErrorMsg] = useState();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     try {
-      const user = await handleRegister({
-        name: form.name,
-        email: form.email,
-        password: form.password,
-      });
+      const user = await handleRegister(data);
       console.log("Signed up as:", user);
     } catch (err) {
       console.log(err.response?.data || err.message);
+      setErrorMsg(err.response?.data || err.message);
     }
   };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -51,59 +74,76 @@ export function RegisterForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="Name">Name</FieldLabel>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
                 <Input
-                  id="Name"
-                  type="Name"
+                  id="name"
+                  type="text"
                   placeholder="Enter your name..."
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className={
-                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
-                  }
-                  required
+                  {...register("name")}
+                  className={cn(
+                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
+                    errors.name && "border-red-500 focus:border-red-500"
+                  )}
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm -mt-2">
+                    {errors.name.message}
+                  </p>
+                )}
               </Field>
+
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email..."
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className={
-                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
-                  }
-                  required
+                  {...register("email")}
+                  className={cn(
+                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
+                    errors.email && "border-red-500 focus:border-red-500"
+                  )}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm -mt-2">
+                    {errors.email.message}
+                  </p>
+                )}
               </Field>
+
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <Link
-                    to={}
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link> */}
                 </div>
                 <Input
                   id="password"
                   type="password"
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
-                  className={
-                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
-                  }
                   placeholder="Enter your password..."
-                  required
+                  {...register("password")}
+                  className={cn(
+                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
+                    errors.password && "border-red-500 focus:border-red-500"
+                  )}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm -mt-2">
+                    {errors.password.message}
+                  </p>
+                )}
               </Field>
+              {errorMsg && (
+                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-2 py-2 ">
+                  {errorMsg}
+                </p>
+              )}
+
               <Field>
-                <Button type="submit">Sign up</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Loading..." : "Sign up"}
+                </Button>
                 <FieldDescription className="text-center">
                   Already have an account? <Link to={LOGIN_ROUTE}>Login</Link>
                 </FieldDescription>

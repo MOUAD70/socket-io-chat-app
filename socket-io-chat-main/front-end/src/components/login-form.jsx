@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { cn } from "../lib/chadcn/utils";
 import { REGISTER_ROUTE } from "../routes/Routes.jsx";
 import { Button } from "./ui/button.jsx";
@@ -18,22 +18,43 @@ import {
 import { Input } from "./ui/input.jsx";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+
+const formSchema = z.object({
+  email: z.string().min(1, "Email is required.").email("Invalid email format."),
+  password: z
+    .string()
+    .min(1, "Password is required.")
+    .min(8, "Password must be at least 8 characters.")
+    .max(20, "Password cannot exceed 20 characters."),
+});
 
 export function LoginForm({ className, ...props }) {
   const { handleLogin } = useContext(AuthContext);
+  const [errorMsg, setErrorMsg] = useState();
 
-  const [form, setForm] = useState({ email: "", password: "" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
-      const user = await handleLogin({
-        email: form.email,
-        password: form.password,
-      });
+      const user = await handleLogin(data);
       console.log("Logged in as:", user);
     } catch (err) {
       console.log(err.response?.data || err.message);
+      setErrorMsg(err.response?.data || err.message);
     }
   };
 
@@ -45,7 +66,7 @@ export function LoginForm({ className, ...props }) {
           <CardDescription>Login with your Email and Password</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -53,38 +74,49 @@ export function LoginForm({ className, ...props }) {
                   id="email"
                   type="email"
                   placeholder="Enter your email..."
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className={
-                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
-                  }
-                  required
+                  {...register("email")}
+                  className={cn(
+                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
+                    errors.email && "border-red-500 focus:border-red-500"
+                  )}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm -mt-2">
+                    {errors.email.message}
+                  </p>
+                )}
               </Field>
+
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <Link
-                    to={}
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link> */}
                 </div>
                 <Input
                   id="password"
                   type="password"
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
-                  className={
-                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
-                  }
                   placeholder="Enter your password..."
-                  required
+                  {...register("password")}
+                  className={cn(
+                    "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
+                    errors.password && "border-red-500 focus:border-red-500"
+                  )}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm -mt-2">
+                    {errors.password.message}
+                  </p>
+                )}
               </Field>
+              {errorMsg && (
+                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-2 py-2 ">
+                  {errorMsg}
+                </p>
+              )}
+
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Loading..." : "Login"}
+                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <Link to={REGISTER_ROUTE}>Sign up</Link>

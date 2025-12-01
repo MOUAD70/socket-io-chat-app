@@ -1,4 +1,4 @@
-import { cn } from "../../lib/chadcn/utils.js"
+import { cn } from "../../lib/shadcn/utils.js"
 
 function Card({ className, ...props }) {
   return (

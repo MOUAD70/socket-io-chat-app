@@ -1,4 +1,4 @@
-import { cn } from "../../lib/chadcn/utils";
+import { cn } from "../../lib/shadcn/utils";
 
 function Input({ className, type, ...props }) {
   return (

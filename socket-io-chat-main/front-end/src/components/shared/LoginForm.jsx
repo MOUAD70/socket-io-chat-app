@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { cn } from "../../lib/chadcn/utils.js";
+import { cn } from "../../lib/shadcn/utils.js";
 import { CHAT_ROUTE, REGISTER_ROUTE } from "../../routes/Routes.jsx";
 import { Button } from "../ui/button.jsx";
 import {

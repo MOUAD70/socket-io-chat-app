@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn } from "../../lib/chadcn/utils.js";
+import { cn } from "../../lib/shadcn/utils.js";
 import { LOGIN_ROUTE } from "../../routes/Routes.jsx";
 import { Button } from "../ui/button.jsx";
 import {

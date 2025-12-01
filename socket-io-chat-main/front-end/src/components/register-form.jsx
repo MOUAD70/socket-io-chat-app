@@ -19,8 +19,9 @@ import {
   FieldLabel,
 } from "./ui/field.jsx";
 import { Input } from "./ui/input.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { useFlash } from "../context/FlashContext.jsx";
 
 const registerSchema = z.object({
   name: z
@@ -40,6 +41,8 @@ const registerSchema = z.object({
 export function RegisterForm({ className, ...props }) {
   const { handleRegister } = useContext(AuthContext);
   const [errorMsg, setErrorMsg] = useState();
+  const navigate = useNavigate();
+  const { flash } = useFlash();
 
   const {
     register,
@@ -58,6 +61,8 @@ export function RegisterForm({ className, ...props }) {
     try {
       const user = await handleRegister(data);
       console.log("Signed up as:", user);
+      flash("Account created successfully!", "success");
+      navigate(LOGIN_ROUTE);
     } catch (err) {
       console.log(err.response?.data || err.message);
       setErrorMsg(err.response?.data || err.message);
@@ -135,7 +140,7 @@ export function RegisterForm({ className, ...props }) {
                 )}
               </Field>
               {errorMsg && (
-                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-2 py-2 ">
+                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-4 py-2 ">
                   {errorMsg}
                 </p>
               )}

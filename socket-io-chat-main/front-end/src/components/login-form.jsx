@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { cn } from "../lib/chadcn/utils";
-import { REGISTER_ROUTE } from "../routes/Routes.jsx";
+import { CHAT_ROUTE, REGISTER_ROUTE } from "../routes/Routes.jsx";
 import { Button } from "./ui/button.jsx";
 import {
   Card,
@@ -16,12 +16,13 @@ import {
   FieldLabel,
 } from "./ui/field.jsx";
 import { Input } from "./ui/input.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useFlash } from "../context/FlashContext.jsx";
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required.").email("Invalid email format."),
@@ -35,6 +36,8 @@ const formSchema = z.object({
 export function LoginForm({ className, ...props }) {
   const { handleLogin } = useContext(AuthContext);
   const [errorMsg, setErrorMsg] = useState();
+  const navigate = useNavigate();
+  const { flash } = useFlash();
 
   const {
     register,
@@ -52,6 +55,8 @@ export function LoginForm({ className, ...props }) {
     try {
       const user = await handleLogin(data);
       console.log("Logged in as:", user);
+      flash("Logged in successfully!", "success");
+      navigate(CHAT_ROUTE);
     } catch (err) {
       console.log(err.response?.data || err.message);
       setErrorMsg(err.response?.data || err.message);
@@ -108,7 +113,7 @@ export function LoginForm({ className, ...props }) {
                 )}
               </Field>
               {errorMsg && (
-                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-2 py-2 ">
+                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-4 py-2">
                   {errorMsg}
                 </p>
               )}

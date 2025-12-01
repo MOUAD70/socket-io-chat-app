@@ -8,10 +8,15 @@ import {
   LOGIN_ROUTE,
   CONTACT_ROUTE,
   ABOUT_ROUTE,
+  CHAT_ROUTE,
+  UNAUTHORIZED_ROUTE,
 } from "./Routes";
 import GlobalLayout from "../layouts/GlobalLayout";
 import Contact from "../pages/Contact";
 import About from "../pages/About";
+import Chat from "../pages/Chat";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import Unauthorized from "../pages/errors/unauthorized";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +42,19 @@ export const router = createBrowserRouter([
         path: ABOUT_ROUTE,
         element: <About />,
       },
+      {
+        path: CHAT_ROUTE,
+        element: (
+          <ProtectedRoute>
+            <Chat />
+          </ProtectedRoute>
+        ),
+      },
     ],
+  },
+  {
+    path: UNAUTHORIZED_ROUTE,
+    element: <Unauthorized />,
   },
   {
     path: "*",

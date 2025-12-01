@@ -1,28 +1,28 @@
 import { useContext } from "react";
-import { cn } from "../lib/chadcn/utils";
-import { CHAT_ROUTE, REGISTER_ROUTE } from "../routes/Routes.jsx";
-import { Button } from "./ui/button.jsx";
+import { cn } from "../../lib/chadcn/utils.js";
+import { CHAT_ROUTE, REGISTER_ROUTE } from "../../routes/Routes.jsx";
+import { Button } from "../ui/button.jsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card.jsx";
+} from "../ui/card.jsx";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "./ui/field.jsx";
-import { Input } from "./ui/input.jsx";
+} from "../ui/field.jsx";
+import { Input } from "../ui/input.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useFlash } from "../context/FlashContext.jsx";
+import { useFlash } from "../../context/FlashContext.jsx";
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required.").email("Invalid email format."),

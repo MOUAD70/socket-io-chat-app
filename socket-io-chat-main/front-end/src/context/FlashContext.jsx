@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import FlashMessage from "../components/FlashMessage";
+import FlashMessage from "../components/shared/FlashMessage";
 
 const FlashContext = createContext();
 

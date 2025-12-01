@@ -2,26 +2,26 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn } from "../lib/chadcn/utils";
-import { LOGIN_ROUTE } from "../routes/Routes.jsx";
-import { Button } from "./ui/button.jsx";
+import { cn } from "../../lib/chadcn/utils.js";
+import { LOGIN_ROUTE } from "../../routes/Routes.jsx";
+import { Button } from "../ui/button.jsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card.jsx";
+} from "../ui/card.jsx";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "./ui/field.jsx";
-import { Input } from "./ui/input.jsx";
+} from "../ui/field.jsx";
+import { Input } from "../ui/input.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext.jsx";
-import { useFlash } from "../context/FlashContext.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
+import { useFlash } from "../../context/FlashContext.jsx";
 
 const registerSchema = z.object({
   name: z

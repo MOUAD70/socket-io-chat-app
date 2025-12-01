@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
-import Register from "../pages/Register";
-import Login from "../pages/Login";
+import Home from "../pages/common/Home";
+import Register from "../pages/auth/Register";
+import Login from "../pages/auth/Login";
 import NotFound from "../pages/errors/NotFound";
 import {
   REGISTER_ROUTE,
@@ -12,8 +12,8 @@ import {
   UNAUTHORIZED_ROUTE,
 } from "./Routes";
 import GlobalLayout from "../layouts/GlobalLayout";
-import Contact from "../pages/Contact";
-import About from "../pages/About";
+import Contact from "../pages/common/Contact";
+import About from "../pages/common/About";
 import Chat from "../pages/Chat";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Unauthorized from "../pages/errors/unauthorized";

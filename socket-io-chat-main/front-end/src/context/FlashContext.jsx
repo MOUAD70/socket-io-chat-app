@@ -8,7 +8,7 @@ export function FlashProvider({ children }) {
 
   useEffect(() => {
     if (message) {
-      const timer = setTimeout(() => setMessage(null), 3000);
+      const timer = setTimeout(() => setMessage(null), 1500);
       return () => clearTimeout(timer);
     }
   }, [message]);

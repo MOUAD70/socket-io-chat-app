@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../components/shared/NavBar";
 import { BackgroundRippleEffect } from "../components/ui/aceternity/background-ripple-effect";
 
-const GlobalLayout = () => {
+const ChatLayout = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <BackgroundRippleEffect className="fixed inset-0 -z-10" />
@@ -17,4 +17,4 @@ const GlobalLayout = () => {
   );
 };
 
-export default GlobalLayout;
+export default ChatLayout;

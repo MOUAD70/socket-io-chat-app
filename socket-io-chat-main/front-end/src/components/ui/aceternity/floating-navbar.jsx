@@ -12,28 +12,21 @@ import { IconLogin } from "@tabler/icons-react";
 import { LOGIN_ROUTE } from "../../../routes/Routes";
 
 export const FloatingNav = ({ navItems, className }) => {
-  // 1. Use scrollY (pixels) instead of scrollYProgress
   const { scrollY } = useScroll();
   const [visible, setVisible] = useState(true);
 
-  // 2. Monitor scroll events
   useMotionValueEvent(scrollY, "change", (current) => {
     if (typeof current === "number") {
-      const previous = scrollY.getPrevious() ?? 0; // Get previous scroll value
+      const previous = scrollY.getPrevious() ?? 0;
       const direction = current - previous;
 
-      // Logic:
-      // 1. If at the very top (less than 50px), always show.
-      // 2. If scrolling UP (direction < 0), show.
-      // 3. If scrolling DOWN (direction > 0), hide.
-      
       if (scrollY.get() < 50) {
         setVisible(true);
       } else {
         if (direction < 0) {
-          setVisible(true); // Scrolling UP
+          setVisible(true);
         } else {
-          setVisible(false); // Scrolling DOWN
+          setVisible(false);
         }
       }
     }
@@ -44,7 +37,7 @@ export const FloatingNav = ({ navItems, className }) => {
       <motion.div
         initial={{
           opacity: 1,
-          y: -100, 
+          y: -100,
         }}
         animate={{
           y: visible ? 0 : -100,
@@ -54,7 +47,7 @@ export const FloatingNav = ({ navItems, className }) => {
           duration: 0.2,
         }}
         className={cn(
-          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border border-transparent dark:border-white/20 rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000] pr-2 pl-8 py-2 items-center justify-center space-x-4",
+          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border border-transparent dark:border-white/20 rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-5000 pr-2 pl-8 py-2 items-center justify-center space-x-4",
           className
         )}
       >
@@ -70,6 +63,7 @@ export const FloatingNav = ({ navItems, className }) => {
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
+
         <Link to={LOGIN_ROUTE}>
           <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/20 text-black dark:text-white hover:bg-neutral-200 active:hover:bg-neutral-300 px-4 py-2 rounded-full cursor-pointer flex items-center justify-center space-x-1 transition-colors duration-150">
             <IconLogin className="h-4 w-4 text-black dark:text-white" />

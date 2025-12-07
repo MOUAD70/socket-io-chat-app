@@ -17,6 +17,7 @@ import About from "../pages/common/About";
 import Chat from "../pages/Chat";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Unauthorized from "../pages/errors/unauthorized";
+import ChatLayout from "../layouts/ChatLayout";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,11 @@ export const router = createBrowserRouter([
         path: ABOUT_ROUTE,
         element: <About />,
       },
+    ],
+  },
+  {
+    element: <ChatLayout />,
+    children: [
       {
         path: CHAT_ROUTE,
         element: (

@@ -1,9 +1,9 @@
-import { useMemo } from "react"
-import { cva } from "class-variance-authority"
+import { useMemo } from "react";
+import { cva } from "class-variance-authority";
 
-import { cn } from "../../lib/shadcn/utils.js"
-import { Label } from "./label.jsx"
-import { Separator } from "./separator.jsx"
+import { cn } from "../../lib/shadcn/utils.js";
+import { Label } from "./label.jsx";
+import { Separator } from "./separator.jsx";
 
 function FieldSet({ className, ...props }) {
   return (
@@ -16,7 +16,7 @@ function FieldSet({ className, ...props }) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLegend({ className, variant = "legend", ...props }) {
@@ -32,7 +32,7 @@ function FieldLegend({ className, variant = "legend", ...props }) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldGroup({ className, ...props }) {
@@ -40,12 +40,12 @@ function FieldGroup({ className, ...props }) {
     <div
       data-slot="field-group"
       className={cn(
-        "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 [&>[data-slot=field-group]]:gap-4",
+        "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 const fieldVariants = cva(
@@ -53,26 +53,24 @@ const fieldVariants = cva(
   {
     variants: {
       orientation: {
-        vertical: [
-          "flex-col [&>*]:w-full [&>.sr-only]:w-auto"
-        ],
+        vertical: ["flex-col [&>*]:w-full [&>.sr-only]:w-auto"],
         horizontal: [
           "flex-row items-center",
           "[&>[data-slot=field-label]]:flex-auto",
-          "has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          "has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
         ],
         responsive: [
           "flex-col [&>*]:w-full [&>.sr-only]:w-auto @md/field-group:flex-row @md/field-group:items-center @md/field-group:[&>*]:w-auto",
           "@md/field-group:[&>[data-slot=field-label]]:flex-auto",
-          "@md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
-        ]
-      }
+          "@md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+        ],
+      },
     },
     defaultVariants: {
-      orientation: "vertical"
-    }
+      orientation: "vertical",
+    },
   }
-)
+);
 
 function Field({ className, orientation = "vertical", ...props }) {
   return (
@@ -83,7 +81,7 @@ function Field({ className, orientation = "vertical", ...props }) {
       className={cn(fieldVariants({ orientation }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function FieldContent({ className, ...props }) {
@@ -96,7 +94,7 @@ function FieldContent({ className, ...props }) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLabel({ className, ...props }) {
@@ -105,13 +103,13 @@ function FieldLabel({ className, ...props }) {
       data-slot="field-label"
       className={cn(
         "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
-        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4",
+        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-4",
         "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10",
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldTitle({ className, ...props }) {
@@ -124,7 +122,7 @@ function FieldTitle({ className, ...props }) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldDescription({ className, ...props }) {
@@ -132,14 +130,14 @@ function FieldDescription({ className, ...props }) {
     <p
       data-slot="field-description"
       className={cn(
-        "text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance",
+        "text-muted-foreground text-sm leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance",
         "last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5",
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldSeparator({ children, className, ...props }) {
@@ -163,21 +161,21 @@ function FieldSeparator({ children, className, ...props }) {
         </span>
       )}
     </div>
-  )
+  );
 }
 
 function FieldError({ className, children, errors, ...props }) {
   const content = useMemo(() => {
-    if (children) return children
+    if (children) return children;
 
-    if (!errors?.length) return null
+    if (!errors?.length) return null;
 
     const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values()
-    ]
+      ...new Map(errors.map((error) => [error?.message, error])).values(),
+    ];
 
     if (uniqueErrors.length === 1) {
-      return uniqueErrors[0]?.message
+      return uniqueErrors[0]?.message;
     }
 
     return (
@@ -187,10 +185,10 @@ function FieldError({ className, children, errors, ...props }) {
             error?.message && <li key={index}>{error.message}</li>
         )}
       </ul>
-    )
-  }, [children, errors])
+    );
+  }, [children, errors]);
 
-  if (!content) return null
+  if (!content) return null;
 
   return (
     <div
@@ -201,7 +199,7 @@ function FieldError({ className, children, errors, ...props }) {
     >
       {content}
     </div>
-  )
+  );
 }
 
 export {
@@ -214,5 +212,5 @@ export {
   FieldSeparator,
   FieldSet,
   FieldContent,
-  FieldTitle
-}
+  FieldTitle,
+};

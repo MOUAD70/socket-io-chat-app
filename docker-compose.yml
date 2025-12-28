@@ -1,5 +1,15 @@
 version: '3.9'
 services:
+  jenkins:
+    image: custom-jenkins
+    user: root
+    privileged: true
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+      
   backend:
     build: ./socket-io-chat-main/back-end
     ports:

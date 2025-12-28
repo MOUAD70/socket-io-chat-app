@@ -5,8 +5,9 @@ const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
 const messageRoute = require("./routes/messageRoute");
 
-const app = express();
 require("dotenv").config();
+const app = express();
+
 
 app.use(express.json());
 app.use(cors());
@@ -19,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
-const uri = process.env.MONGODB_URI;
+const uri = process.env.DB_CONNECTION_STRING;
 
 mongoose
   .connect(uri)

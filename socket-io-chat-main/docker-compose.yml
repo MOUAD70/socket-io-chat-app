@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  backend:
+    build: ./back-end
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: "mongodb+srv://mouad_db_user:dOk4X4TOZQXqjyBQ@chat-app-cluster.jtuwgk3.mongodb.net/chat-app-db?appName=chat-app-cluster"
+
+  frontend:
+    build: ./front-end
+    ports:
+      - "3000:80"

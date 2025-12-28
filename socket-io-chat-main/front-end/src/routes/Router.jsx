@@ -16,7 +16,7 @@ import Contact from "../pages/common/Contact";
 import About from "../pages/common/About";
 import Chat from "../pages/Chat";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
-import Unauthorized from "../pages/errors/unauthorized";
+import Unauthorized from "../pages/errors/Unauthorized";
 import ChatLayout from "../layouts/ChatLayout";
 
 export const router = createBrowserRouter([

@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         COMPOSE_PROJECT_NAME = "socket-io-chat-app"
-        MONGO_URI = "mongodb+srv://mouad_db_user:dOk4X4TOZQXqjyBQ@chat-app-cluster.jtuwgk3.mongodb.net/chat-app-db?appName=chat-app-cluster"
+        DB_CONNECTION_STRING = "mongodb+srv://mouad_db_user:dOk4X4TOZQXqjyBQ@chat-app-cluster.jtuwgk3.mongodb.net/chat-app-db?appName=chat-app-cluster"
     }
 
     stages {

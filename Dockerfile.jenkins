@@ -17,6 +17,12 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
 # Install Docker CLI and Docker Compose
 RUN apt-get update && apt-get install -y docker-ce-cli docker-compose-plugin
 
+# Give jenkins user access to the docker group
+RUN groupadd -g 999 docker || true && \
+    usermod -aG docker jenkins
+
+USER jenkins
+
 # Create a symlink so 'docker-compose' works like the old version
 RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
 

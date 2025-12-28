@@ -16,7 +16,7 @@ pipeline {
         stage('Stop Previous Containers') {
             steps {
                 script {
-                    sh 'docker-compose down || echo "No containers to stop"'
+                    sh 'docker compose down || echo "No containers to stop"'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Build & Run Containers') {
             steps {
                 script {
-                    sh 'docker-compose up -d --build'
+                    sh 'docker compose up -d --build'
                 }
             }
         }

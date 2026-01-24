@@ -6,46 +6,54 @@ import LogoutButton from "../components/shared/LogoutButton";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import PotentialChats from "../components/shared/chat/PotentialChats";
-import { IconMessageCirclePlus } from "@tabler/icons-react";
+import { IconMessageCirclePlus, IconArrowLeft } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ChatBox from "../components/shared/chat/ChatBox";
 
 const Chat = () => {
   const { user } = useContext(AuthContext);
-  const { userChats, isUserChatsLoading, userChatsError } =
-    useContext(ChatContext);
+  const { userChats, updateCurrentChat, currentChat } = useContext(ChatContext);
   const [showPotentialChats, setShowPotentialChats] = useState(false);
 
-  const [currentChat, setCurrentChat] = useState(null);
+  const goBackToList = () => updateCurrentChat(null);
 
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-16 py-6 sm:py-8 md:py-10">
-      <div className="relative flex flex-col md:flex-row gap-4 h-[75vh]">
+      <div className="relative flex flex-col md:flex-row gap-4 md:h-[75vh]">
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 z-20">
           <div className="rounded-full flex items-center justify-center">
-            {<LogoutButton />}
+            <LogoutButton />
           </div>
         </div>
 
-        <div className="w-full md:w-[30%] rounded-md border border-neutral-200 dark:border-white/20 bg-white dark:bg-black flex flex-col overflow-hidden">
+        <div
+          className={`
+            w-full md:w-[30%]
+            rounded-md border border-neutral-200 dark:border-white/20
+            bg-white dark:bg-black
+            flex flex-col overflow-hidden
+            ${currentChat ? "hidden md:flex" : "flex"}
+          `}
+        >
           <div className="px-4 py-3 border-b border-neutral-200 dark:border-white/20">
             <h2 className="text-sm font-semibold text-center">
               {user.name.toUpperCase()}'s Chats
             </h2>
           </div>
-          <div className="overflow-y-auto">
-            <div
-              onClick={() => setShowPotentialChats(true)}
-              className="flex items-center justify-between text-sm px-4 py-3 border-b cursor-pointer text-white font-bold bg-amber-600 hover:bg-amber-700 transition"
-            >
-              <span>Start a new chat</span>
-              <IconMessageCirclePlus className="mx-2" />
-            </div>
+
+          <div
+            onClick={() => setShowPotentialChats(true)}
+            className="flex items-center justify-between text-sm px-4 py-3 border-b cursor-pointer text-white font-bold bg-amber-600 hover:bg-amber-700 transition"
+          >
+            <span>Start a new chat</span>
+            <IconMessageCirclePlus className="mx-2" />
           </div>
-          <div className="flex-1 overflow-y-auto">
-            {userChats?.map((chat, i) => (
+
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            {userChats?.map((chat) => (
               <div
-                key={i}
-                onClick={() => setCurrentChat(chat)}
+                key={chat._id}
+                onClick={() => updateCurrentChat(chat)}
                 className="text-sm px-4 py-3 border-b cursor-pointer hover:bg-neutral-100 dark:hover:bg-white/5 transition"
               >
                 <UserChat chat={chat} user={user} />
@@ -54,15 +62,33 @@ const Chat = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-[70%] rounded-md border border-neutral-200 dark:border-white/20 bg-white dark:bg-black flex flex-col overflow-hidden">
-          <div className="px-4 py-3 border-b border-neutral-200 dark:border-white/20">
-            <h2 className="text-sm font-semibold text-center">
+        <div
+          className={`
+            w-full md:w-[70%]
+            rounded-md border border-neutral-200 dark:border-white/20
+            bg-white dark:bg-black
+            flex flex-col overflow-hidden
+            ${currentChat ? "flex" : "hidden md:flex"}
+          `}
+        >
+          <div className="px-4 py-3 border-b border-neutral-200 dark:border-white/20 flex items-center gap-2">
+            <button
+              onClick={goBackToList}
+              className="md:hidden text-neutral-400 hover:text-neutral-700 dark:hover:text-white cursor-pointer transition -ml-2"
+              aria-label="Back"
+            >
+              <IconArrowLeft size={"20px"}/>
+            </button>
+
+            <h2 className="text-sm font-semibold flex-1 text-center md:text-center">
               {currentChat ? "Conversation" : "Select a chat"}
             </h2>
+
+            <div className="w-10 md:hidden" />
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {/* Messages will be rendered here later */}
+          <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
+            <ChatBox />
           </div>
 
           {currentChat && (
@@ -114,7 +140,7 @@ const Chat = () => {
               </div>
 
               <div className="p-4 max-h-[60vh] overflow-y-auto">
-                <PotentialChats onClose={() => setShowPotentialChats(false)}/>
+                <PotentialChats onClose={() => setShowPotentialChats(false)} />
               </div>
             </motion.div>
           </motion.div>

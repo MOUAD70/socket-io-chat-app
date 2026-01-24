@@ -22,6 +22,7 @@ import { Input } from "../ui/input.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { useFlash } from "../../context/FlashContext.jsx";
+import { motion, AnimatePresence } from "framer-motion";
 
 const registerSchema = z.object({
   name: z
@@ -139,11 +140,19 @@ export function RegisterForm({ className, ...props }) {
                   </p>
                 )}
               </Field>
-              {errorMsg && (
-                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-4 py-2 ">
-                  {errorMsg}
-                </p>
-              )}
+              <AnimatePresence>
+                {errorMsg && (
+                  <motion.div
+                    className="rounded-2xl bg-red-100 text-red-700 text-sm px-4 py-2 border border-red-200"
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    {errorMsg}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <Field>
                 <Button type="submit" disabled={isSubmitting}>

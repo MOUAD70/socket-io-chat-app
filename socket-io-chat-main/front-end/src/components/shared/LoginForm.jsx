@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext.jsx";
+import { motion, AnimatePresence } from "framer-motion";
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required.").email("Invalid email format."),
@@ -82,7 +83,7 @@ export function LoginForm({ className, ...props }) {
                   {...register("email")}
                   className={cn(
                     "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
-                    errors.email && "border-red-500 focus:border-red-500"
+                    errors.email && "border-red-500 focus:border-red-500",
                   )}
                 />
                 {errors.email && (
@@ -103,7 +104,7 @@ export function LoginForm({ className, ...props }) {
                   {...register("password")}
                   className={cn(
                     "bg-white border-gray-300 h-11 text-gray-900 rounded-lg pl-5 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors",
-                    errors.password && "border-red-500 focus:border-red-500"
+                    errors.password && "border-red-500 focus:border-red-500",
                   )}
                 />
                 {errors.password && (
@@ -112,11 +113,20 @@ export function LoginForm({ className, ...props }) {
                   </p>
                 )}
               </Field>
-              {errorMsg && (
-                <p className="text-red-600 text-sm -mt-2 bg-red-200 rounded-2xl px-4 py-2">
-                  {errorMsg}
-                </p>
-              )}
+
+              <AnimatePresence>
+                {errorMsg && (
+                  <motion.div
+                    className="rounded-2xl bg-red-100 text-red-700 text-sm px-4 py-2 border border-red-200"
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    {errorMsg}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <Field>
                 <Button type="submit" disabled={isSubmitting}>

@@ -1,19 +1,19 @@
-# Récupération de l’image Jenkins
+# Retrieve the Jenkins image
 docker pull jenkins/jenkins:lts
 
-# Lancement de Jenkins avec docker
+# Run Jenkins using Docker
 docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 
-# Accès à Jenkins et récupération du mot de passe initial
+# Access Jenkins and retrieve the initial admin password
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
-# Installer Docker dans Jenkins
+# Install Docker inside Jenkins
 docker exec -it jenkins bash
 apt update
 apt install docker.io -y
 
-# Ajouter Jenkins au groupe docker
+# Add Jenkins user to the Docker group
 usermod -aG docker jenkins
 
-# Modifier les permission au niveau du conteneur Jenkins
-docker exec -u root jenkins-server chmod 666 /var/run/docker.sock
+# Modify permissions at the Jenkins container level
+docker exec -u root jenkins chmod 666 /var/run/docker.sock

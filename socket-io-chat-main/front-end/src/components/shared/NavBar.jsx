@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { FloatingNav } from "../ui/aceternity/floating-navbar";
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import { AuthContext } from "../../context/AuthContext";
-import LogoutButton from "./LogoutButton";
+
 
 const NavBar = () => {
   const { user, loading } = useContext(AuthContext);

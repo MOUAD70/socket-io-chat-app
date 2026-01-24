@@ -23,7 +23,8 @@ export const UserChat = ({ chat, user }) => {
 
         <div className="flex-1 overflow-hidden">
           <p className="text-sm font-medium text-neutral-900 dark:text-white truncate">
-            {recipientUser?.name || "Unknown"}
+            {recipientUser?.name.charAt(0).toUpperCase() +
+              recipientUser?.name?.slice(1) || "Unknown"}
           </p>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
             {chat.lastMessage || "No messages yet"}

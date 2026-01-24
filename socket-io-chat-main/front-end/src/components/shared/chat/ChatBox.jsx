@@ -57,7 +57,7 @@ const ChatBox = () => {
                       : "bg-neutral-100 text-neutral-900 dark:bg-white/10 dark:text-white"}
                   `}
                 >
-                  <p className="whitespace-pre-wrap break-words">{message.text}</p>
+                  <p className="whitespace-pre-wrap wrap-break-word">{message.text}</p>
 
                   <p
                     className={`

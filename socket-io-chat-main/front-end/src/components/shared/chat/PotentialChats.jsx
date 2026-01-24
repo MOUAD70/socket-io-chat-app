@@ -1,20 +1,22 @@
 import { useContext } from "react";
 import { ChatContext } from "../../../context/ChatContext";
+import { AuthContext } from "../../../context/AuthContext";
 
-const PotentialChats = () => {
-  const { potentialChats } = useContext(ChatContext);
+const PotentialChats = ({ onClose }) => {
+  const { user } = useContext(AuthContext);
+  const { potentialChats, createChat } = useContext(ChatContext);
 
   if (!potentialChats || potentialChats.length === 0) return null;
 
   return (
     <div className="mb-4">
       <div className="flex flex-col gap-2">
-        {potentialChats.map((u) => {
+        {potentialChats.map((u, index) => {
           const avatarLetter = u.name?.charAt(0).toUpperCase() || "U";
 
           return (
             <div
-              key={u._id}
+              key={index}
               className="
                 flex items-center justify-between
                 px-3 py-2
@@ -25,6 +27,10 @@ const PotentialChats = () => {
                 hover:bg-neutral-100 dark:hover:bg-white/10
                 transition
               "
+              onClick={() => {
+                createChat(user._id, u._id);
+                onClose?.();
+              }}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div className="shrink-0 w-10 h-10">

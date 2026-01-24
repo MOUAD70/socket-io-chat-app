@@ -114,7 +114,7 @@ const Chat = () => {
               </div>
 
               <div className="p-4 max-h-[60vh] overflow-y-auto">
-                <PotentialChats />
+                <PotentialChats onClose={() => setShowPotentialChats(false)}/>
               </div>
             </motion.div>
           </motion.div>

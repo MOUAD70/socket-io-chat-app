@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-import { getRequest } from "../utils/services";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { getRequest, postRequest } from "../utils/services";
 
 export const ChatContext = createContext();
 
@@ -9,6 +9,7 @@ export const ChatContextProvider = ({ children, user }) => {
   const [userChatsError, setUserChatsError] = useState(null);
   const [potentialChats, setPotentialChats] = useState([]);
   const [usersError, setUsersError] = useState(null);
+  const [createChatError, setCreateChatError] = useState(null);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -60,6 +61,22 @@ export const ChatContextProvider = ({ children, user }) => {
 
     getUserChats();
   }, [user]);
+
+  const createChat = useCallback(async (firstId, secondId) => {
+    const response = await postRequest(
+      `http://localhost:5000/api/chats/`,
+      JSON.stringify({
+        firstId,
+        secondId,
+      }),
+    );
+
+    if (response.error) {
+      setCreateChatError(response);
+    }
+
+    setUserChats((prev) => [...prev, response]);
+  }, []);
   return (
     <ChatContext.Provider
       value={{
@@ -68,6 +85,8 @@ export const ChatContextProvider = ({ children, user }) => {
         userChatsError,
         potentialChats,
         usersError,
+        createChat,
+        createChatError,
       }}
     >
       {children}

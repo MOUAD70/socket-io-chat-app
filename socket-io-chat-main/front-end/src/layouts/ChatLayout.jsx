@@ -9,7 +9,7 @@ const ChatLayout = () => {
 
       <div className="relative z-10">
         <NavBar />
-        <div className="mx-auto mt-15 w-full max-w-4xl relative rounded-2xl border border-neutral-200 dark:border-white/20 bg-white dark:bg-black overflow-hidden mb-5">
+        <div className="mx-auto mt-15 w-full max-w-4xl relative rounded-2xl border border-neutral-200 dark:border-white/20 bg-white dark:bg-black overflow-hidden mb-5 min-h-[calc(100dvh-6rem)] md:min-h-0">
           <Outlet />
         </div>
       </div>

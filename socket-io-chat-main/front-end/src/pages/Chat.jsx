@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
 import { UserChat } from "../components/shared/chat/UserChat";
@@ -9,13 +9,32 @@ import PotentialChats from "../components/shared/chat/PotentialChats";
 import { IconMessageCirclePlus, IconArrowLeft } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ChatBox from "../components/shared/chat/ChatBox";
+import EmojiPicker from "emoji-picker-react";
+import { Send } from "lucide-react";
 
 const Chat = () => {
   const { user } = useContext(AuthContext);
-  const { userChats, updateCurrentChat, currentChat } = useContext(ChatContext);
+  const { userChats, updateCurrentChat, currentChat, sendTextMessage } =
+    useContext(ChatContext);
   const [showPotentialChats, setShowPotentialChats] = useState(false);
+  const [textMessage, setTextMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef(null);
 
   const goBackToList = () => updateCurrentChat(null);
+
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (!pickerRef.current) return;
+      if (!pickerRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const addEmoji = (emojiData) => {
+    setTextMessage((prev) => prev + emojiData.emoji);
+  };
 
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-16 py-6 sm:py-8 md:py-10">
@@ -64,7 +83,7 @@ const Chat = () => {
 
         <div
           className={`
-            w-full md:w-[70%]
+            w-full md:w-[70%] h-full
             rounded-md border border-neutral-200 dark:border-white/20
             bg-white dark:bg-black
             flex flex-col overflow-hidden
@@ -77,7 +96,7 @@ const Chat = () => {
               className="md:hidden text-neutral-400 hover:text-neutral-700 dark:hover:text-white cursor-pointer transition -ml-2"
               aria-label="Back"
             >
-              <IconArrowLeft size={"20px"}/>
+              <IconArrowLeft size={"20px"} />
             </button>
 
             <h2 className="text-sm font-semibold flex-1 text-center md:text-center">
@@ -98,8 +117,55 @@ const Chat = () => {
                   type="text"
                   placeholder="Type a message..."
                   className="bg-white border-gray-300 text-gray-900 rounded-4xl pl-4 focus:border-amber-600 focus:ring-1 focus:ring-amber-200 hover:border-amber-600 transition-colors"
+                  value={textMessage}
+                  onChange={(e) => setTextMessage(e.target.value)}
                 />
-                <Button className="rounded-4xl">Send</Button>
+
+                <div className="relative" ref={pickerRef}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="rounded-4xl cursor-pointer"
+                    onClick={() => setOpen((v) => !v)}
+                    aria-label="Emoji"
+                  >
+                    😀
+                  </Button>
+
+                  <AnimatePresence>
+                    {open && (
+                      <motion.div
+                        className="absolute bottom-12 right-0 z-50"
+                        initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 8 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        <EmojiPicker
+                          width={250}
+                          height={300}
+                          searchDisabled
+                          onEmojiClick={(emojiData) => addEmoji(emojiData)}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <Button
+                  className="rounded-4xl"
+                  type="submit"
+                  onClick={() =>
+                    sendTextMessage(
+                      textMessage,
+                      user,
+                      currentChat._id,
+                      setTextMessage,
+                    )
+                  }
+                >
+                  Send <Send />
+                </Button>
               </div>
             </div>
           )}

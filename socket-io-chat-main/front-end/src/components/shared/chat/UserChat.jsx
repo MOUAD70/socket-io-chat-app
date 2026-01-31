@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { useFetchRecipient } from "../../../hooks/useFetchRecipient";
+import { ChatContext } from "../../../context/ChatContext";
 
 export const UserChat = ({ chat, user }) => {
+  const { onlineUsers } = useContext(ChatContext);
   const { recipientUser } = useFetchRecipient(user, chat);
 
   const avatarLetter = recipientUser?.name?.charAt(0).toUpperCase() || "U";
 
   const notifications = 2;
-  const isOnline = true;
+  const isOnline = onlineUsers?.some((u) => u?.userId === recipientUser?._id);
 
   return (
     <div className="flex items-center justify-between gap-3 relative">
